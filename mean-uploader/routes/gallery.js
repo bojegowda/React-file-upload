@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var multer = require('multer');
-var Gallery = require('../models/Gallery.js');
+var Gallery = require('../models/Gallery');
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -26,7 +26,9 @@ var storage = multer.diskStorage({
 var upload = multer({
     storage: storage
 })
-router.post('/gallery', upload.single('file'), function (req, res, next) {
+router.post('/', upload.single('file'), function (req, res, next) {
+
+
     if (!req.file) {
         return res.status(500).send({
             message: 'Upload fail'
@@ -41,6 +43,10 @@ router.post('/gallery', upload.single('file'), function (req, res, next) {
             res.json(gallery);
         });
     }
+});
+
+router.get('/', function (req, res, next) {
+    res.send('respond with a image');
 });
 
 module.exports = router;
